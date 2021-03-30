@@ -11,9 +11,8 @@ export class OwnersComponent implements OnInit {
 
   owners: OwnerEntity[] = [];
   displayedColumns: string[] = ['lastName', 'firstName', 'middleName', 'cars'];
-  columnsToDisplay: string[] = this.displayedColumns.slice();
-  // active: string = '';
   activeRow: boolean = false;
+  ownerId: number;
 
   constructor(private carOwnersService: CarOwnersService) { }
 
@@ -22,6 +21,11 @@ export class OwnersComponent implements OnInit {
       console.log('data', data);
       this.owners = data;
     });
+  }
+
+  chooseRow(row) {
+    this.ownerId = row.id;
+    console.log(' this.ownerId',  this.ownerId);
   }
 
   addOwner() {

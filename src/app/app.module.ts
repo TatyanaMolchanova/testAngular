@@ -10,12 +10,14 @@ import { OwnersComponent } from './components/owners/owners.component';
 import { CarsComponent } from './components/cars/cars.component';
 import { DataService } from "./services/data.service";
 import { SharedModule } from "./shared/modules/shared.module";
+import { OwnerComponent } from './components/owner/owner.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CarsComponent,
-    OwnersComponent
+    OwnersComponent,
+    OwnerComponent
 
   ],
   imports: [
