@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { OwnersComponent } from "./owners/owners.component";
-import {CarsComponent} from "./cars/cars.component";
+import { OwnersComponent } from "./components/owners/owners.component";
+import { CarsComponent } from "./components/cars/cars.component";
 
 const routes: Routes = [
   { path: '', redirectTo: 'owners', pathMatch: 'full' },

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CarEntity, ICarOwnersService, OwnerEntity } from "../interfaces";
+import { CarEntity, ICarOwnersService, OwnerEntity } from "../shared/models/interfaces";
 import { Observable } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { DataService } from "./data.service";
