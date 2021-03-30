@@ -1,11 +1,11 @@
 <div class="owners">
   <button mat-raised-button (click)="addOwner()" color="primary">
     <mat-icon aria-hidden="false" aria-label="Example home icon">add</mat-icon> Добавить </button>
-  <button mat-raised-button (click)="viewOwner()" color="primary">
+  <button mat-raised-button (click)="viewOwner()" color="primary" [disabled]="!activeRow">
     <mat-icon aria-hidden="false" aria-label="Example home icon">visibility</mat-icon> Просмотр </button>
-  <button mat-raised-button (click)="editOwner()" color="primary">
+  <button mat-raised-button (click)="editOwner()" color="primary" [disabled]="!activeRow">
     <mat-icon aria-hidden="false" aria-label="Example home icon">edit_note</mat-icon> Редактировать </button>
-  <button mat-raised-button (click)="deleteOwner()" color="primary">
+  <button mat-raised-button (click)="deleteOwner()" color="primary" [disabled]="!activeRow">
     <mat-icon aria-hidden="false" aria-label="Example home icon">delete</mat-icon> Удалить </button>
 
   <table mat-table [dataSource]="owners" class="mat-elevation-z8">
@@ -30,7 +30,8 @@
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+        (click)="activeRow = row" [ngClass]="activeRow === row ? 'choosed-row' : '' " ></tr>
   </table>
 </div>
 

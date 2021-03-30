@@ -12,6 +12,8 @@ export class OwnersComponent implements OnInit {
   owners: OwnerEntity[] = [];
   displayedColumns: string[] = ['lastName', 'firstName', 'middleName', 'cars'];
   columnsToDisplay: string[] = this.displayedColumns.slice();
+  // active: string = '';
+  activeRow: boolean = false;
 
   constructor(private carOwnersService: CarOwnersService) { }
 
