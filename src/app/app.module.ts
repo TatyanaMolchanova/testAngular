@@ -11,6 +11,7 @@ import { CarsComponent } from './components/cars/cars.component';
 import { DataService } from "./services/data.service";
 import { SharedModule } from "./shared/modules/shared.module";
 import { OwnerComponent } from './components/owner/owner.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { OwnerComponent } from './components/owner/owner.component';
     HttpClientModule,
     HttpClientInMemoryWebApiModule.forRoot(DataService),
     BrowserAnimationsModule,
-    SharedModule
+    SharedModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

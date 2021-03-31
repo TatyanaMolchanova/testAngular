@@ -1,0 +1,38 @@
+.owner-form {
+  margin: 20px;
+
+  .mat-form-field {
+    display: block;
+    width: 40%;
+  }
+
+  button {
+    &:first-of-type {
+      margin-right: 10px;
+    }
+  }
+
+  .cars {
+    margin-bottom: 30px;
+
+    .cars-title-box {
+      display: flex;
+      width: 100%;
+      justify-content: center;
+
+      span {
+        width: 20%;
+        margin-right: 1%;
+        font-weight: bold;
+        font-size: 18px;
+      }
+    }
+
+    .mat-form-field {
+      display: inline-block;
+      width: 20%;
+      margin-right: 1%;
+    }
+  }
+}
+

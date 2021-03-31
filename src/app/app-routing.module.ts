@@ -9,7 +9,8 @@ const routes: Routes = [
   { path: '', redirectTo: 'owners', pathMatch: 'full' },
   { path: 'owners', component: OwnersComponent },
   { path: 'cars', component: CarsComponent },
-  { path: 'owner/:id', component: OwnerComponent }
+  { path: 'owner/:id', component: OwnerComponent },
+  { path: 'owner', component: OwnerComponent }
 ];
 
 @NgModule({

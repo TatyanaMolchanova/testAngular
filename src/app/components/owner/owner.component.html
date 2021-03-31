@@ -1,1 +1,67 @@
-<p>owner works!</p>
+<form [formGroup]="ownerForm" class="owner-form" (ngSubmit)="saveOwner()">
+
+  <h2>Владелец:</h2>
+
+  <mat-form-field>
+    <mat-label>Фамилия</mat-label>
+    <input matInput type="text" formControlName="lastName">
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Имя</mat-label>
+    <input matInput type="text" formControlName="firstName">
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Отчество</mat-label>
+    <input matInput type="text" formControlName="middleName">
+  </mat-form-field>
+
+  <h2>Автомобили:</h2>
+
+  <div formArrayName="cars" class="cars">
+
+    <div class="cars-title-box">
+      <span>Номер</span>
+      <span>Марка</span>
+      <span>Модель</span>
+      <span>Год</span>
+    </div>
+
+    <div *ngFor="let car of cars.controls; let carIndex = index" [formGroupName]="carIndex" class="car">
+
+      <mat-form-field>
+        <input matInput type="text" formControlName="stateNumber">
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput type="text" formControlName="brand">
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput type="text" formControlName="modelName">
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput type="text" formControlName="dateProduction">
+      </mat-form-field>
+
+      <button mat-raised-button (click)="deleteCar(carIndex)" color="accent">
+        <mat-icon aria-hidden="false" aria-label="Remove icon">delete</mat-icon> </button>
+
+    </div>
+
+    <button mat-raised-button color="primary" (click)="addCar()">
+      <mat-icon aria-hidden="false" aria-label="Add icon">add</mat-icon> Добавить автомобиль </button>
+
+  </div>
+
+  <button mat-raised-button color="primary" type="submit">
+    <mat-icon aria-hidden="false" aria-label="Add icon">save</mat-icon> Сохранить </button>
+
+  <button mat-raised-button [routerLink]="['/owners']">
+    <mat-icon aria-hidden="false" aria-label="Add icon">arrow_back</mat-icon> Назад </button>
+
+</form>
+
+

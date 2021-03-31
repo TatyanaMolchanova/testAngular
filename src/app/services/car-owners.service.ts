@@ -1,14 +1,16 @@
 import { Injectable } from '@angular/core';
 import { CarEntity, ICarOwnersService, OwnerEntity } from "../shared/models/interfaces";
-import { Observable } from "rxjs";
-import { HttpClient } from "@angular/common/http";
+import {Observable, throwError} from "rxjs";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import { DataService } from "./data.service";
+import {catchError} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
 })
 export class CarOwnersService implements  ICarOwnersService {
   SERVER_URL: string = 'http://localhost:8080/api/';
+  options: {} = { headers: new HttpHeaders({ 'Content-Type': 'application/json'})};
 
   constructor(private http: HttpClient,
               private data: DataService) { }
@@ -28,7 +30,13 @@ export class CarOwnersService implements  ICarOwnersService {
     lastName: string,
     middleName: string
   ): Observable<OwnerEntity> {
-    return;
+    const owner = { id, cars, firstName, lastName, middleName };
+
+    console.log(' this.http.post<OwnerEntity>(`${this.SERVER_URL + \'owners\'}`, owner, this.options)',  this.http.post<OwnerEntity>(`${this.SERVER_URL + 'owners'}`, owner, this.options));
+
+    return this.http.post<OwnerEntity>(`${this.SERVER_URL + 'owners'}`, owner, this.options).pipe(
+      catchError(this.handleError)
+    )
   };
 
   editOwner(owner: OwnerEntity): Observable<OwnerEntity> {
@@ -38,4 +46,9 @@ export class CarOwnersService implements  ICarOwnersService {
   deleteOwner(owner: number): void {
 
   };
+
+  handleError(error: any) {
+    console.error(error);
+    return throwError(error);
+  }
 }

@@ -18,9 +18,11 @@ export class OwnersComponent implements OnInit {
 
   ngOnInit(): void {
     this.carOwnersService.getOwners().subscribe((data: OwnerEntity[]) => {
-      console.log('data', data);
+      console.log('data OwnersComponent', data);
       this.owners = data;
     });
+
+
   }
 
   chooseRow(row) {
