@@ -26,6 +26,13 @@ export interface ICarOwnersService {
     lastName: string,
     middleName: string
   ): Observable<OwnerEntity>;
-  editOwner(owner: OwnerEntity): Observable<OwnerEntity>;
+  // editOwner(owner: OwnerEntity): Observable<OwnerEntity>;
+  editOwner(
+    id: number,
+    cars: CarEntity[],
+    firstName: string,
+    lastName: string,
+    middleName: string
+  ): Observable<OwnerEntity>;
   deleteOwner(owner: number): void;
 }

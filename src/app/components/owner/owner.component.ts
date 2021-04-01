@@ -28,6 +28,8 @@ export class OwnerComponent implements OnInit, AfterContentChecked, OnDestroy {
   owner: OwnerEntity;
   owners: OwnerEntity[] = [];
   viewOwnerIsLoadedTimes: number = 0;
+  addOnly: boolean = false;
+  editOnly: boolean = false;
   viewOnly: boolean = false;
 
   constructor(private fb: FormBuilder,
@@ -37,12 +39,6 @@ export class OwnerComponent implements OnInit, AfterContentChecked, OnDestroy {
 
 
   ngOnInit() {
-    // this.carOwnersService.viewOwner$.subscribe((data) => {
-    //   this.viewOnly = data;
-    //   console.log('THIS.VIEWONLY', this.viewOnly)
-    //   console.log('THIS.VIEWONLY data', data)
-    // });
-
     this.subscription = this.route.params.subscribe(params => {
       this.id = +params['id'];
       // console.log('this.id', this.id);
@@ -66,6 +62,14 @@ export class OwnerComponent implements OnInit, AfterContentChecked, OnDestroy {
         stateNumber: [''],
       })]),
     });
+
+    this.carOwnersService.addOwner$.subscribe(data => {
+      this.addOnly = data;
+      // console.log('THIS.VIEWONLY', this.addOnly)
+      // console.log('THIS.VIEWONLY data', data)
+    });
+
+    this.carOwnersService.editOwner$.subscribe(data => this.editOnly = data);
   }
 
   get cars() {
@@ -146,21 +150,33 @@ export class OwnerComponent implements OnInit, AfterContentChecked, OnDestroy {
   }
 
   saveOwner() {
-    this.ownerForm.patchValue({
-      id: this.idOwner,
-    })
+    // this.ownerForm.patchValue({
+    //   id: this.idOwner,
+    // })
 
-    this.carOwnersService.createOwner(
-      this.ownerForm.value.id,
-      this.ownerForm.value.cars,
-      this.ownerForm.value.firstName,
-      this.ownerForm.value.lastName,
-      this.ownerForm.value.middleName
-    ).subscribe((data: OwnerEntity) => {
-      this.owner = data;
-    });
+    console.log('this.addOnly saveOwner', this.addOnly)
 
-    this.cars.value.pop();
+    if (this.addOnly) {
+      this.carOwnersService.createOwner(
+        this.ownerForm.value.id,
+        this.ownerForm.value.cars,
+        this.ownerForm.value.firstName,
+        this.ownerForm.value.lastName,
+        this.ownerForm.value.middleName
+      ).subscribe((data: OwnerEntity) => {
+        this.owner = data;
+      });
+
+      this.cars.value.pop();
+      return;
+    }
+
+    if (this.editOnly) {
+
+      this.carOwnersService.editOwner(this.ownerForm.value).subscribe((data: OwnerEntity) => {
+        this.owner = data;
+      });
+    }
   }
 
   ngOnDestroy() {
