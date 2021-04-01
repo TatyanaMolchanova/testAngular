@@ -28,44 +28,25 @@ export class OwnerComponent implements OnInit, AfterContentChecked, OnDestroy {
   owner: OwnerEntity;
   owners: OwnerEntity[] = [];
   viewOwnerIsLoadedTimes: number = 0;
-  // viewOnly: boolean = false;
-  viewOnly: boolean;
-  subscriptionView: Subscription;
+  viewOnly: boolean = false;
 
   constructor(private fb: FormBuilder,
               private carOwnersService: CarOwnersService,
-              // private data: DataService,
               private route: ActivatedRoute) {
-
-    // this.carOwnersService.viewOwner$.subscribe((data) => {
-    //   this.viewOnly = data;
-    //
-    //   console.log('THIS.VIEWONLY', this.viewOnly)
-    //   console.log('THIS.VIEWONLY data', data)
-    // })
   }
 
 
   ngOnInit() {
-    this.carOwnersService.viewOwner$.subscribe((data) => {
-      this.viewOnly = data;
-
-      console.log('THIS.VIEWONLY', this.viewOnly)
-      console.log('THIS.VIEWONLY data', data)
-    });
+    // this.carOwnersService.viewOwner$.subscribe((data) => {
+    //   this.viewOnly = data;
+    //   console.log('THIS.VIEWONLY', this.viewOnly)
+    //   console.log('THIS.VIEWONLY data', data)
+    // });
 
     this.subscription = this.route.params.subscribe(params => {
       this.id = +params['id'];
       // console.log('this.id', this.id);
     });
-    // console.log('this.subscription', this.subscription);
-
-    // this.carOwnersService.viewOwner$.subscribe((data) => {
-    //   this.viewOnly = data;
-    //
-    //   console.log('THIS.VIEWONLY', this.viewOnly)
-    //   console.log('THIS.VIEWONLY data', data)
-    // })
 
     this.carOwnersService.getOwners().subscribe((data: OwnerEntity[]) => {
       console.log('0 data', data);
@@ -85,25 +66,6 @@ export class OwnerComponent implements OnInit, AfterContentChecked, OnDestroy {
         stateNumber: [''],
       })]),
     });
-
-    // this.carOwnersService.viewOwner$.subscribe(view => this.viewOnly = view);
-    // this.carOwnersService.viewOwner$.subscribe(view => {
-    //   this.viewOnly = view
-    //   console.log('this.carOwnersService.viewOwner$.subscribe VIEW', view)
-    // });
-
-
-    // this.subscriptionView = this.carOwnersService.viewOwner$.subscribe(view => {
-    //   this.viewOnly = view
-    //   console.log('subscriptionView view', view);
-    //   console.log('subscriptionView this.viewOnly', this.viewOnly);
-    // });
-
-    // this.carOwnersService.getViewOwner(this.viewOnly);
-    //
-    // console.log('owner this.viewOnly', this.viewOnly);
-
-
   }
 
   get cars() {
@@ -144,14 +106,18 @@ export class OwnerComponent implements OnInit, AfterContentChecked, OnDestroy {
         this.viewOwnerIsLoadedTimes++;
       }
 
-      // this.carOwnersService.viewOwner$.subscribe((data) => {
-      //   this.viewOnly = data;
-      //
-      //   console.log('THIS.VIEWONLY', this.viewOnly)
-      //   console.log('THIS.VIEWONLY data', data)
-      // })
+      this.carOwnersService.viewOwner$.subscribe((data) => {
+        this.viewOnly = data;
+        // console.log('THIS.VIEWONLY', this.viewOnly)
+        // console.log('THIS.VIEWONLY data', data)
+      });
 
-      // this.carOwnersService.viewOwner$.subscribe(view => this.viewOnly = view);
+      if (this.viewOnly) {
+        this.ownerForm.controls['lastName'].disable();
+        this.ownerForm.controls['firstName'].disable();
+        this.ownerForm.controls['middleName'].disable();
+        this.ownerForm.controls['cars'].disable();
+      }
 
     } else {
       this.ownerForm.patchValue({
@@ -159,10 +125,8 @@ export class OwnerComponent implements OnInit, AfterContentChecked, OnDestroy {
       })
     }
 
-    // this.carOwnersService.getViewOwner(this.viewOnly);
-
-    // console.log('aftercontenc this.viewOnly', this.viewOnly);
-    // this.carOwnersService.viewOwner$.subscribe(view => this.viewOnly = view);
+    console.log('this.ownerForm', this.ownerForm);
+    console.log('this.ownerForm.value', this.ownerForm.value);
   }
 
   addCar() {
@@ -172,10 +136,6 @@ export class OwnerComponent implements OnInit, AfterContentChecked, OnDestroy {
       modelName: [''],
       stateNumber: [''],
     }));
-
-    // this.carOwnersService.getViewOwner(this.viewOnly);
-
-    // console.log('addcar this.viewOnly', this.viewOnly);
   }
 
   deleteCar(index) {
@@ -203,12 +163,8 @@ export class OwnerComponent implements OnInit, AfterContentChecked, OnDestroy {
     this.cars.value.pop();
   }
 
-  viewOwner() {
-    // this.carOwnersService.getViewOwner(this.viewOnly);
-  }
-
   ngOnDestroy() {
-    // this.carOwnersService.getOwners.unsubscribe();
+
   }
 
 }

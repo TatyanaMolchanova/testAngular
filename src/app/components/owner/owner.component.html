@@ -46,17 +46,17 @@
         <input matInput type="text" formControlName="dateProduction">
       </mat-form-field>
 
-      <button mat-raised-button (click)="deleteCar(carIndex)" color="accent">
+      <button mat-raised-button (click)="deleteCar(carIndex)" color="accent" [disabled]="viewOnly">
         <mat-icon aria-hidden="false" aria-label="Remove icon">delete</mat-icon> </button>
 
     </div>
 
-    <button mat-raised-button color="primary" (click)="addCar()">
+    <button mat-raised-button color="primary" (click)="addCar()" [disabled]="viewOnly">
       <mat-icon aria-hidden="false" aria-label="Add icon">add</mat-icon> Добавить автомобиль </button>
 
   </div>
 
-  <button mat-raised-button color="primary" type="submit">
+  <button mat-raised-button color="primary" type="submit"  [disabled]="viewOnly">
     <mat-icon aria-hidden="false" aria-label="Add icon">save</mat-icon> Сохранить </button>
 
   <button mat-raised-button [routerLink]="['/owners']">
@@ -64,5 +64,3 @@
 
 </form>
 
-viewOnly {{ viewOnly }}
-<!--viewOnly {{ viewOnly2 }}-->
