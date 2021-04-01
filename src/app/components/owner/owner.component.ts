@@ -1,4 +1,12 @@
-import {AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, Component, OnInit} from '@angular/core';
+import {
+  AfterContentChecked,
+  AfterContentInit,
+  AfterViewChecked,
+  AfterViewInit,
+  Component,
+  OnDestroy,
+  OnInit
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
@@ -12,7 +20,7 @@ import { OwnerEntity } from "../../shared/models/interfaces";
   templateUrl: './owner.component.html',
   styleUrls: ['./owner.component.scss']
 })
-export class OwnerComponent implements OnInit, AfterContentChecked {
+export class OwnerComponent implements OnInit, AfterContentChecked, OnDestroy {
   id: number;
   private subscription: Subscription;
   ownerForm: FormGroup;
@@ -38,7 +46,14 @@ export class OwnerComponent implements OnInit, AfterContentChecked {
   }
 
 
-  ngOnInit(): void {
+  ngOnInit() {
+    this.carOwnersService.viewOwner$.subscribe((data) => {
+      this.viewOnly = data;
+
+      console.log('THIS.VIEWONLY', this.viewOnly)
+      console.log('THIS.VIEWONLY data', data)
+    });
+
     this.subscription = this.route.params.subscribe(params => {
       this.id = +params['id'];
       // console.log('this.id', this.id);
@@ -129,12 +144,12 @@ export class OwnerComponent implements OnInit, AfterContentChecked {
         this.viewOwnerIsLoadedTimes++;
       }
 
-      this.carOwnersService.viewOwner$.subscribe((data) => {
-        this.viewOnly = data;
-
-        console.log('THIS.VIEWONLY', this.viewOnly)
-        console.log('THIS.VIEWONLY data', data)
-      })
+      // this.carOwnersService.viewOwner$.subscribe((data) => {
+      //   this.viewOnly = data;
+      //
+      //   console.log('THIS.VIEWONLY', this.viewOnly)
+      //   console.log('THIS.VIEWONLY data', data)
+      // })
 
       // this.carOwnersService.viewOwner$.subscribe(view => this.viewOnly = view);
 
@@ -190,6 +205,10 @@ export class OwnerComponent implements OnInit, AfterContentChecked {
 
   viewOwner() {
     // this.carOwnersService.getViewOwner(this.viewOnly);
+  }
+
+  ngOnDestroy() {
+    // this.carOwnersService.getOwners.unsubscribe();
   }
 
 }

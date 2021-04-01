@@ -22,7 +22,7 @@ export class OwnersComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.carOwnersService.getOwners().subscribe((data: OwnerEntity[]) => {
-      console.log('data OwnersComponent', data);
+      // console.log('data OwnersComponent', data);
       this.owners = data;
     });
 
@@ -35,11 +35,11 @@ export class OwnersComponent implements OnInit, OnDestroy {
     // console.log('0 this.viewOnly', this.viewOnly);
     this.subscription = this.carOwnersService.viewOwner$.subscribe(view => {
       this.viewOnly = view
-      console.log('view', view);
-      console.log('1 this.viewOnly', this.viewOnly);
+      // console.log('view', view);
+      // console.log('1 this.viewOnly', this.viewOnly);
     });
     // // this.subscription = this.carOwnersService.viewOwner$.subscribe(edit => this.editOnly = edit);
-    console.log('1 this.viewOnly', this.viewOnly);
+    // console.log('1 this.viewOnly', this.viewOnly);
     // console.log('this.subscription', this.subscription)
 
     this.carOwnersService.getViewOwner(this.viewOnly);
@@ -57,10 +57,17 @@ export class OwnersComponent implements OnInit, OnDestroy {
 
   viewOwner() {
     this.viewOnly = true;
-    console.log('in OWNERS this.viewOnly', this.viewOnly)
+    // console.log('in OWNERS this.viewOnly', this.viewOnly)
     // this.editOnly = false;
     this.carOwnersService.getViewOwner(this.viewOnly);
-    console.log('click viewOwn er')
+    // console.log('click viewOwn er')
+
+    // this.carOwnersService.viewOwner$.subscribe((data) => {
+    //   this.viewOnly = data;
+    //
+    //   console.log('999 THIS.VIEWONLY', this.viewOnly)
+    //   console.log('999 THIS.VIEWONLY data', data)
+    // })
   }
 
   editOwner() {

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CarEntity, ICarOwnersService, OwnerEntity } from "../shared/models/interfaces";
-import { Observable, Subject, throwError } from "rxjs";
+import {BehaviorSubject, Observable, Subject, throwError} from "rxjs";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { DataService } from "./data.service";
 import { catchError } from "rxjs/operators";
@@ -11,7 +11,8 @@ import { catchError } from "rxjs/operators";
 export class CarOwnersService implements  ICarOwnersService {
   SERVER_URL: string = 'http://localhost:8080/api/';
   options: {} = { headers: new HttpHeaders({ 'Content-Type': 'application/json'})};
-  private viewOwnerSource = new Subject<boolean>();
+  // private viewOwnerSource = new Subject<boolean>();
+  private viewOwnerSource: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   // viewOwner$ = this.viewOwnerSource.asObservable();
   viewOwner$: Observable<boolean>;
 
@@ -31,7 +32,7 @@ export class CarOwnersService implements  ICarOwnersService {
   getViewOwner(viewOnly: boolean) {
     this.viewOwnerSource.next(viewOnly);
 
-    console.log('this.viewOwnerSource.next(viewOnly)', this.viewOwnerSource.next(viewOnly));
+    // console.log('this.viewOwnerSource.next(viewOnly)', this.viewOwnerSource.next(viewOnly));
     // this.viewOwnerSource.next(editOnly);
   }
 
