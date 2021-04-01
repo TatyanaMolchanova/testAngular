@@ -63,25 +63,9 @@ export class CarOwnersService implements  ICarOwnersService {
   };
 
   deleteOwner(ownerId: number) {
-
-    console.log('delete ', `${this.SERVER_URL + 'owner/' + ownerId}`)
-
-
-    // return this.http.delete<OwnerEntity>(`${this.SERVER_URL + 'owner/' + ownerId}`, this.options).pipe(
-    //   catchError(this.handleError)
-    // )
-
-    const url = `${this.SERVER_URL}/${ownerId}`;
-
-    console.log('url', url)
-
-    return this.http.delete<OwnerEntity>(`${this.SERVER_URL + 'owner/' + ownerId}`, this.options).pipe(
+    return this.http.delete<OwnerEntity>(`${this.SERVER_URL + '/owners/' + ownerId}`, this.options).pipe(
       catchError(this.handleError)
     )
-
-    // return this.http.delete<OwnerEntity>(url, this.options).pipe(
-    //   catchError(this.handleError)
-    // )
   };
 
   handleError(error: any) {

@@ -23,9 +23,14 @@
     :host(.choosed-row) {
       border: 2px solid #673ab7;
     }
+  }
 
-    //tr.mat-row {
-    //  border: 2px solid #673ab7;
-    //}
+  .no-owner {
+    margin-top: 50px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 18px;
   }
 }

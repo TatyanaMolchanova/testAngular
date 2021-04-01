@@ -50,9 +50,11 @@ export class OwnersComponent implements OnInit, OnDestroy {
   }
 
   deleteOwner(ownerNumber) {
-    this.carOwnersService.deleteOwner(ownerNumber).subscribe(data => {
-      console.log('data from deleteOwner', data);
-    })
+    this.carOwnersService.deleteOwner(ownerNumber).subscribe();
+
+    this.carOwnersService.getOwners().subscribe((data: OwnerEntity[]) => {
+      this.owners = data;
+    });
   }
 
   ngOnDestroy() {

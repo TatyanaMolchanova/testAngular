@@ -11,7 +11,7 @@
   <button mat-raised-button (click)="deleteOwner(ownerId)" color="primary" [disabled]="!activeRow">
     <mat-icon aria-hidden="false" aria-label="Remove icon">delete</mat-icon> Удалить </button>
 
-  <table mat-table [dataSource]="owners" class="mat-elevation-z8">
+  <table mat-table [dataSource]="owners" class="mat-elevation-z8" *ngIf="owners.length > 0; else noOwners">
     <ng-container matColumnDef="lastName">
       <th mat-header-cell *matHeaderCellDef> Фамилия </th>
       <td mat-cell *matCellDef="let element"> {{element.lastName}} </td>
@@ -36,5 +36,10 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"
         (click)="activeRow = row; chooseRow(row)" [ngClass]="activeRow === row ? 'choosed-row' : '' "></tr>
   </table>
+
+
+  <ng-template #noOwners>
+    <p class="no-owner">Здесь пока нет владельцев авто, добавьте первого автовладельца!</p>
+  </ng-template>
 </div>
 
