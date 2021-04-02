@@ -12,14 +12,17 @@ import { DataService } from "./services/data.service";
 import { SharedModule } from "./shared/modules/shared.module";
 import { OwnerComponent } from './components/owner/owner.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { DialogOnSaveAddComponent } from './components/dialogs/dialog-on-save-add/dialog-on-save-add.component';
+import { DialogOnSaveEditComponent } from './components/dialogs/dialog-on-save-edit/dialog-on-save-edit.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CarsComponent,
     OwnersComponent,
-    OwnerComponent
-
+    OwnerComponent,
+    DialogOnSaveAddComponent,
+    DialogOnSaveEditComponent,
   ],
   imports: [
     BrowserModule,

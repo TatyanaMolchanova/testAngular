@@ -130,7 +130,8 @@
 
   </div>
 
-  <button mat-raised-button color="primary" type="submit"  [disabled]="viewOnly || ownerForm.invalid">
+  <button mat-raised-button color="primary" type="submit"
+          [disabled]="viewOnly || ownerForm.invalid || !ownerForm.dirty">
     <mat-icon aria-hidden="false" aria-label="Add icon">save</mat-icon> Сохранить </button>
 
   <button mat-raised-button [routerLink]="['/owners']">

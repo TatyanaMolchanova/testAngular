@@ -4,7 +4,7 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatTableModule } from "@angular/material/table";
 import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from '@angular/material/input';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import { MatDialogModule } from "@angular/material/dialog";
 
 @NgModule({
   declarations: [],
@@ -13,6 +13,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
     MatTableModule,
     MatIconModule,
     MatInputModule,
+    MatDialogModule
   ],
   imports: [
     CommonModule,
@@ -20,6 +21,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
     MatTableModule,
     MatIconModule,
     MatInputModule,
+    MatDialogModule
   ]
 })
 export class SharedModule { }

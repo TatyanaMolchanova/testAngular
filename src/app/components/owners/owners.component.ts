@@ -15,8 +15,11 @@ export class OwnersComponent implements OnInit {
   owners: OwnerEntity[] = [];
   ownerId: number;
   viewOnly: boolean = false;
+  private readonly storage: Storage;
 
-  constructor(private carOwnersService: CarOwnersService) { }
+  constructor(private carOwnersService: CarOwnersService) {
+    this.storage = window.sessionStorage;
+  }
 
   ngOnInit(): void {
     this.carOwnersService.getOwners().subscribe((data: OwnerEntity[]) => {
@@ -38,12 +41,18 @@ export class OwnersComponent implements OnInit {
 
   viewOwner() {
     this.viewOnly = true;
+    this.editOnly = false;
     this.carOwnersService.getViewOwner(this.viewOnly);
+    this.storage.setItem('isViewOnly', `${this.viewOnly}`);
+    this.storage.setItem('isEditOnly', `${this.editOnly}`);
   }
 
   editOwner() {
     this.editOnly = true;
+    this.viewOnly = false;
     this.carOwnersService.getEditOwner(this.editOnly);
+    this.storage.setItem('isViewOnly', `${this.viewOnly}`);
+    this.storage.setItem('isEditOnly', `${this.editOnly}`);
   }
 
   deleteOwner(ownerNumber) {

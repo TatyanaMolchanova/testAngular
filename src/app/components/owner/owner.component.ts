@@ -8,6 +8,9 @@ import { Subscription } from 'rxjs';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CarOwnersService } from "../../services/car-owners.service";
 import { OwnerEntity } from "../../shared/models/interfaces";
+import { MatDialog } from "@angular/material/dialog";
+import { DialogOnSaveAddComponent } from "../dialogs/dialog-on-save-add/dialog-on-save-add.component";
+import { DialogOnSaveEditComponent } from "../dialogs/dialog-on-save-edit/dialog-on-save-edit.component";
 
 
 @Component({
@@ -26,11 +29,14 @@ export class OwnerComponent implements OnInit, AfterContentChecked {
   ownerForm: FormGroup;
   owners: OwnerEntity[] = [];
   viewOwnerIsLoadedTimes: number = 0;
+  private readonly storage: Storage;
   private subscription: Subscription;
 
-  constructor(private fb: FormBuilder,
+  constructor(public dialog: MatDialog,
+              private fb: FormBuilder,
               private carOwnersService: CarOwnersService,
               private route: ActivatedRoute) {
+    this.storage = window.sessionStorage;
   }
 
 
@@ -41,7 +47,7 @@ export class OwnerComponent implements OnInit, AfterContentChecked {
 
     this.carOwnersService.getOwners().subscribe((data: OwnerEntity[]) => {
       this.owners = data;
-      this.idOwner = data.length + 1;
+      this.idOwner = data.length;
     });
 
     this.ownerForm = this.fb.group({
@@ -77,6 +83,7 @@ export class OwnerComponent implements OnInit, AfterContentChecked {
   ngAfterContentChecked() {
     if (this.id || this.id === 0) {
       if (this.viewOwnerIsLoadedTimes < 2) {
+
         const currentOwner = this.owners[this.id];
         const carsQuantity = this.owners[this.id]?.cars.length;
 
@@ -103,7 +110,8 @@ export class OwnerComponent implements OnInit, AfterContentChecked {
         this.viewOnly = data;
       });
 
-      if (this.viewOnly) {
+      // if (this.viewOnly) {
+      if (this.storage.getItem('isViewOnly') === 'true') {
         this.ownerForm.controls['lastName'].disable();
         this.ownerForm.controls['firstName'].disable();
         this.ownerForm.controls['middleName'].disable();
@@ -143,12 +151,16 @@ export class OwnerComponent implements OnInit, AfterContentChecked {
       ).subscribe((data: OwnerEntity) => {
         this.owner = data;
       });
+
+      this.dialog.open(DialogOnSaveAddComponent);
     }
 
-    if (this.editOnly) {
+    if (this.storage.getItem('isEditOnly') === 'true') {
       this.carOwnersService.editOwner(this.ownerForm.value).subscribe((data: OwnerEntity) => {
         this.owner = data;
       });
+
+      this.dialog.open(DialogOnSaveEditComponent);
     }
   }
 }

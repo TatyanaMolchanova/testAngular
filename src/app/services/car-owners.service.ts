@@ -27,7 +27,10 @@ export class CarOwnersService implements  ICarOwnersService {
   };
 
   getOwnerById(id: number): Observable<OwnerEntity> {
-    return;
+    console.log('`${this.SERVER_URL + \'/owners/\' + ownerId}`', `${this.SERVER_URL + '/owners/' + id}`)
+    return this.http.get<OwnerEntity>(`${this.SERVER_URL + '/owners/' + id}`).pipe(
+      catchError(this.handleError)
+    )
   };
 
   getAddOwner(addOnly: boolean) {
