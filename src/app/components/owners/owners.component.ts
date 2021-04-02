@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { OwnerEntity } from '../../shared/models/interfaces';
 import { CarOwnersService } from '../../services/car-owners.service';
 
@@ -7,14 +7,13 @@ import { CarOwnersService } from '../../services/car-owners.service';
   templateUrl: './owners.component.html',
   styleUrls: ['./owners.component.scss']
 })
-export class OwnersComponent implements OnInit, OnDestroy {
-
-  owners: OwnerEntity[] = [];
-  displayedColumns: string[] = ['lastName', 'firstName', 'middleName', 'cars'];
+export class OwnersComponent implements OnInit {
   activeRow: boolean = false;
-  ownerId: number;
   addOnly: boolean = false;
+  displayedColumns: string[] = ['lastName', 'firstName', 'middleName', 'cars'];
   editOnly: boolean = false;
+  owners: OwnerEntity[] = [];
+  ownerId: number;
   viewOnly: boolean = false;
 
   constructor(private carOwnersService: CarOwnersService) { }
@@ -22,7 +21,6 @@ export class OwnersComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.carOwnersService.getOwners().subscribe((data: OwnerEntity[]) => {
       this.owners = data;
-      console.log('data owners', data)
     });
     this.carOwnersService.getAddOwner(this.addOnly);
     this.carOwnersService.getEditOwner(this.editOnly);
@@ -31,7 +29,6 @@ export class OwnersComponent implements OnInit, OnDestroy {
 
   chooseRow(row) {
     this.ownerId = row.id;
-    // console.log(' this.ownerId',  this.ownerId);
   }
 
   addOwner() {
@@ -56,8 +53,4 @@ export class OwnersComponent implements OnInit, OnDestroy {
       this.owners = data;
     });
   }
-
-  ngOnDestroy() {
-  }
-
 }

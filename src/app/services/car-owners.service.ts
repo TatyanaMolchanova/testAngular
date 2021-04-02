@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CarEntity, ICarOwnersService, OwnerEntity } from "../shared/models/interfaces";
-import {BehaviorSubject, Observable, Subject, throwError} from "rxjs";
+import { BehaviorSubject, Observable, throwError } from "rxjs";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { DataService } from "./data.service";
 import { catchError } from "rxjs/operators";
@@ -11,15 +11,14 @@ import { catchError } from "rxjs/operators";
 export class CarOwnersService implements  ICarOwnersService {
   SERVER_URL: string = 'http://localhost:8080/api';
   options: {} = { headers: new HttpHeaders({ 'Content-Type': 'application/json'})};
-  private viewOwnerSource: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
-  viewOwner$: Observable<boolean> = this.viewOwnerSource.asObservable();
   private addOwnerSource: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   addOwner$: Observable<boolean> = this.addOwnerSource.asObservable();
   private editOwnerSource: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   editOwner$: Observable<boolean> = this.editOwnerSource.asObservable();
+  private viewOwnerSource: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
+  viewOwner$: Observable<boolean> = this.viewOwnerSource.asObservable();
 
-  constructor(private http: HttpClient,
-              private data: DataService) {
+  constructor(private http: HttpClient) {
 
   }
 
@@ -69,7 +68,6 @@ export class CarOwnersService implements  ICarOwnersService {
   };
 
   handleError(error: any) {
-    console.error(error);
     return throwError(error);
   }
 }

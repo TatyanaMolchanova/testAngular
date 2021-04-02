@@ -2,12 +2,15 @@
   <button mat-raised-button color="primary" (click)="addOwner()"
           [routerLink]="[ '/owner' ]">
     <mat-icon aria-hidden="false" aria-label="Add icon">add</mat-icon> Добавить </button>
+
   <button mat-raised-button (click)="viewOwner()" color="primary" [disabled]="!activeRow"
           [routerLink]="[ '/owner',  ownerId ]">
     <mat-icon aria-hidden="false" aria-label="View icon">visibility</mat-icon> Просмотр </button>
+
   <button mat-raised-button (click)="editOwner()" color="primary" [disabled]="!activeRow"
           [routerLink]="[ '/owner',  ownerId ]">
     <mat-icon aria-hidden="false" aria-label="Edit icon">edit_note</mat-icon> Редактировать </button>
+
   <button mat-raised-button (click)="deleteOwner(ownerId)" color="primary" [disabled]="!activeRow">
     <mat-icon aria-hidden="false" aria-label="Remove icon">delete</mat-icon> Удалить </button>
 
