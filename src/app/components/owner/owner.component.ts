@@ -31,6 +31,7 @@ export class OwnerComponent implements OnInit, AfterContentChecked, OnDestroy {
   addOnly: boolean = false;
   editOnly: boolean = false;
   viewOnly: boolean = false;
+  currentYear: number = (new Date()).getFullYear();
 
   constructor(private fb: FormBuilder,
               private carOwnersService: CarOwnersService,
@@ -57,7 +58,14 @@ export class OwnerComponent implements OnInit, AfterContentChecked, OnDestroy {
       middleName: ['', [Validators.required, Validators.minLength(3)]],
       cars: this.fb.array([this.fb.group({
         brand: ['', [Validators.required, Validators.minLength(2)]],
-        dateProduction: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(4)]],
+        dateProduction: ['', [
+          Validators.required,
+          Validators.minLength(4),
+          Validators.maxLength(4),
+          Validators.min(1990),
+          Validators.max((new Date()).getFullYear())
+          // Validators.max(2021)
+        ]],
         modelName: ['', [Validators.required, Validators.minLength(2)]],
         stateNumber: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(8)]],
       })]),
@@ -160,10 +168,10 @@ export class OwnerComponent implements OnInit, AfterContentChecked, OnDestroy {
     //   id: this.idOwner,
     // })
 
-    console.log('this.addOnly saveOwner', this.addOnly)
+    // console.log('this.addOnly saveOwner', this.addOnly)
 
     if (this.addOnly) {
-      console.log('saveOwner ADD')
+      // console.log('saveOwner ADD')
       this.carOwnersService.createOwner(
         this.ownerForm.value.id,
         this.ownerForm.value.cars,
@@ -179,7 +187,7 @@ export class OwnerComponent implements OnInit, AfterContentChecked, OnDestroy {
     }
 
     if (this.editOnly) {
-      console.log('saveOwner EDIT')
+      // console.log('saveOwner EDIT')
       this.carOwnersService.editOwner(this.ownerForm.value).subscribe((data: OwnerEntity) => {
         this.owner = data;
       });
