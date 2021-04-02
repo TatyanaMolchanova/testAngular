@@ -4,18 +4,45 @@
 
   <mat-form-field>
     <mat-label>Фамилия</mat-label>
-    <input matInput type="text" formControlName="lastName">
+    <input matInput type="text" formControlName="lastName" required>
   </mat-form-field>
+
+  <div class="alert"
+    *ngIf="ownerForm.controls['lastName'].invalid && (ownerForm.controls['lastName'].dirty || ownerForm.controls['lastName'].touched)">
+    <p *ngIf="ownerForm.controls['lastName'].errors.required">Пожалуйста, укажите фамилию</p>
+    <p *ngIf="ownerForm.controls['lastName'].hasError('minlength')">
+      Фамилия должна состоять минимум из 3 знаков.
+      Сейчас она состоит из {{ownerForm.controls['lastName'].errors.minlength.actualLength}} знаков.
+    </p>
+  </div>
 
   <mat-form-field>
     <mat-label>Имя</mat-label>
-    <input matInput type="text" formControlName="firstName">
+    <input matInput type="text" formControlName="firstName" required>
   </mat-form-field>
+
+  <div class="alert"
+       *ngIf="ownerForm.controls['firstName'].invalid && (ownerForm.controls['firstName'].dirty || ownerForm.controls['firstName'].touched)">
+    <p *ngIf="ownerForm.controls['firstName'].errors.required">Пожалуйста, укажите имя</p>
+    <p *ngIf="ownerForm.controls['firstName'].hasError('minlength')">
+      Имя должно состоять минимум из 3 знаков.
+      Сейчас оно состоит из {{ownerForm.controls['firstName'].errors.minlength.actualLength}} знаков.
+    </p>
+  </div>
 
   <mat-form-field>
     <mat-label>Отчество</mat-label>
-    <input matInput type="text" formControlName="middleName">
+    <input matInput type="text" formControlName="middleName" required>
   </mat-form-field>
+
+  <div class="alert"
+       *ngIf="ownerForm.controls['middleName'].invalid && (ownerForm.controls['middleName'].dirty || ownerForm.controls['middleName'].touched)">
+    <p *ngIf="ownerForm.controls['middleName'].errors.required">Пожалуйста, укажите отчество</p>
+    <p *ngIf="ownerForm.controls['middleName'].hasError('minlength')">
+      Отчество должно состоять минимум из 3 знаков.
+      Сейчас оно состоит из {{ownerForm.controls['middleName'].errors.minlength.actualLength}} знаков.
+    </p>
+  </div>
 
   <h2>Автомобили:</h2>
 
@@ -31,32 +58,77 @@
     <div *ngFor="let car of cars.controls; let carIndex = index" [formGroupName]="carIndex" class="car">
 
       <mat-form-field>
-        <input matInput type="text" formControlName="stateNumber">
+        <input matInput type="text" formControlName="stateNumber" required>
       </mat-form-field>
 
       <mat-form-field>
-        <input matInput type="text" formControlName="brand">
+        <input matInput type="text" formControlName="brand" required>
       </mat-form-field>
 
       <mat-form-field>
-        <input matInput type="text" formControlName="modelName">
+        <input matInput type="text" formControlName="modelName" required>
       </mat-form-field>
 
       <mat-form-field>
-        <input matInput type="text" formControlName="dateProduction">
+        <input matInput type="text" formControlName="dateProduction" required>
       </mat-form-field>
 
       <button mat-raised-button (click)="deleteCar(carIndex)" color="accent" [disabled]="viewOnly">
         <mat-icon aria-hidden="false" aria-label="Remove icon">delete</mat-icon> </button>
 
+      <div class="alert"
+           *ngIf="car.controls['stateNumber'].invalid && (car.controls['stateNumber'].dirty || car.controls['stateNumber'].touched)">
+        <p *ngIf="car.controls['stateNumber'].errors.required">Пожалуйста, укажите номер автомобиля.</p>
+        <p *ngIf="car.controls['stateNumber'].hasError('minlength')">
+          Номер автомобиля должен состоять из 8 знаков.
+          Сейчас он состоит из {{car.controls['stateNumber'].errors.minlength.actualLength}} знаков.
+        </p>
+        <p *ngIf="car.controls['stateNumber'].hasError('maxlength')">
+          Номер автомобиля должен состоять из 8 знаков.
+          Сейчас он состоит из {{car.controls['stateNumber'].errors.maxlength.actualLength}} знаков.
+        </p>
+      </div>
+
+      <div class="alert"
+           *ngIf="car.controls['brand'].invalid && (car.controls['brand'].dirty || car.controls['brand'].touched)">
+        <p *ngIf="car.controls['brand'].errors.required">Пожалуйста, укажите марку автомобиля.</p>
+        <p *ngIf="car.controls['brand'].hasError('minlength')">
+          Название марки автомобиля должно состоять минимум из 2 знаков.
+          Сейчас оно состоит из {{car.controls['brand'].errors.minlength.actualLength}} знаков.
+        </p>
+      </div>
+
+      <div class="alert"
+           *ngIf="car.controls['modelName'].invalid && (car.controls['modelName'].dirty || car.controls['modelName'].touched)">
+        <p *ngIf="car.controls['modelName'].errors.required">Пожалуйста, укажите модель автомобиля.</p>
+        <p *ngIf="car.controls['modelName'].hasError('minlength')">
+          Название модели автомобиля должно состоять минимум из 2 знаков.
+          Сейчас оно состоит из {{car.controls['modelName'].errors.minlength.actualLength}} знаков.
+        </p>
+      </div>
+
+      <div class="alert"
+           *ngIf="car.controls['dateProduction'].invalid && (car.controls['dateProduction'].dirty || car.controls['dateProduction'].touched)">
+        <p *ngIf="car.controls['dateProduction'].errors.required">Пожалуйста, укажите год выпуска автомобиля.</p>
+        <p *ngIf="car.controls['dateProduction'].hasError('minlength')">
+          Год выпуска автомобиля должно состоять минимум из 4 чисел.
+          Сейчас он состоит из {{car.controls['dateProduction'].errors.minlength.actualLength}} знаков.
+        </p>
+        <p *ngIf="car.controls['dateProduction'].hasError('maxlength')">
+          Номер автомобиля должен состоять из 4 знаков.
+          Сейчас он состоит из {{car.controls['dateProduction'].errors.maxlength.actualLength}} знаков.
+        </p>
+      </div>
+
     </div>
 
-    <button mat-raised-button color="primary" (click)="addCar()" [disabled]="viewOnly">
+
+    <button mat-raised-button color="primary" (click)="addCar()" [disabled]="viewOnly || cars.invalid">
       <mat-icon aria-hidden="false" aria-label="Add icon">add</mat-icon> Добавить автомобиль </button>
 
   </div>
 
-  <button mat-raised-button color="primary" type="submit"  [disabled]="viewOnly">
+  <button mat-raised-button color="primary" type="submit"  [disabled]="viewOnly || ownerForm.invalid">
     <mat-icon aria-hidden="false" aria-label="Add icon">save</mat-icon> Сохранить </button>
 
   <button mat-raised-button [routerLink]="['/owners']">

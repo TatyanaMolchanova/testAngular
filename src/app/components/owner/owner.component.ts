@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import { CarOwnersService } from "../../services/car-owners.service";
 import { DataService } from "../../services/data.service";
 import { OwnerEntity } from "../../shared/models/interfaces";
@@ -52,14 +52,14 @@ export class OwnerComponent implements OnInit, AfterContentChecked, OnDestroy {
 
     this.ownerForm = this.fb.group({
       id: 0,
-      lastName: [''],
-      firstName: [''],
-      middleName: [''],
+      lastName: ['', [Validators.required, Validators.minLength(3)]],
+      firstName: ['', [Validators.required, Validators.minLength(3)]],
+      middleName: ['', [Validators.required, Validators.minLength(3)]],
       cars: this.fb.array([this.fb.group({
-        brand: [''],
-        dateProduction: [''],
-        modelName: [''],
-        stateNumber: [''],
+        brand: ['', [Validators.required, Validators.minLength(2)]],
+        dateProduction: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(4)]],
+        modelName: ['', [Validators.required, Validators.minLength(2)]],
+        stateNumber: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(8)]],
       })]),
     });
 
@@ -75,6 +75,10 @@ export class OwnerComponent implements OnInit, AfterContentChecked, OnDestroy {
   get cars() {
     return this.ownerForm.get('cars') as FormArray;
   }
+
+  // get ownerDataFromForm(): FormGroup {
+  //   return this.ownerForm.get('lastName') as FormGroup;
+  // }
 
   ngAfterContentChecked() {
     if (this.id || this.id === 0) {
@@ -127,6 +131,8 @@ export class OwnerComponent implements OnInit, AfterContentChecked, OnDestroy {
       this.ownerForm.patchValue({
         id: this.idOwner,
       })
+
+      console.log('this.cars', this.cars)
     }
 
     console.log('this.ownerForm', this.ownerForm);
@@ -157,6 +163,7 @@ export class OwnerComponent implements OnInit, AfterContentChecked, OnDestroy {
     console.log('this.addOnly saveOwner', this.addOnly)
 
     if (this.addOnly) {
+      console.log('saveOwner ADD')
       this.carOwnersService.createOwner(
         this.ownerForm.value.id,
         this.ownerForm.value.cars,
@@ -167,12 +174,12 @@ export class OwnerComponent implements OnInit, AfterContentChecked, OnDestroy {
         this.owner = data;
       });
 
-      this.cars.value.pop();
-      return;
+      // this.cars.value.pop();
+      // return;
     }
 
     if (this.editOnly) {
-
+      console.log('saveOwner EDIT')
       this.carOwnersService.editOwner(this.ownerForm.value).subscribe((data: OwnerEntity) => {
         this.owner = data;
       });
