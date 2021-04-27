@@ -1,6 +1,6 @@
 import {
   AfterContentChecked,
-  Component,
+  Component, OnDestroy,
   OnInit
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
@@ -18,16 +18,20 @@ import { DialogOnSaveEditComponent } from "../dialogs/dialog-on-save-edit/dialog
   templateUrl: './owner.component.html',
   styleUrls: ['./owner.component.scss']
 })
-export class OwnerComponent implements OnInit, AfterContentChecked {
+export class OwnerComponent implements OnInit, AfterContentChecked, OnDestroy {
   addOnly: boolean = false;
+  addOwnerSub: Subscription;
   currentYear: number = (new Date()).getFullYear();
   editOnly: boolean = false;
+  editOwner: Subscription;
   viewOnly: boolean = false;
   id: number;
   idOwner: number = 0;
   owner: OwnerEntity;
   ownerForm: FormGroup;
   owners: OwnerEntity[] = [];
+  ownersSub: Subscription;
+  subscriptions: Subscription = new Subscription();
   viewOwnerIsLoadedTimes: number = 0;
   private readonly storage: Storage;
   private subscription: Subscription;
@@ -45,7 +49,7 @@ export class OwnerComponent implements OnInit, AfterContentChecked {
       this.id = +params['id'];
     });
 
-    this.carOwnersService.getOwners().subscribe((data: OwnerEntity[]) => {
+    const ownersSub = this.carOwnersService.getOwners().subscribe((data: OwnerEntity[]) => {
       this.owners = data;
       this.idOwner = data.length;
     });
@@ -69,11 +73,13 @@ export class OwnerComponent implements OnInit, AfterContentChecked {
       })]),
     });
 
-    this.carOwnersService.addOwner$.subscribe(data => {
+    const addOwnerSub = this.carOwnersService.addOwner$.subscribe(data => {
       this.addOnly = data;
     });
 
-    this.carOwnersService.editOwner$.subscribe(data => this.editOnly = data);
+    const editOwner = this.carOwnersService.editOwner$.subscribe(data => this.editOnly = data);
+
+    this.subscriptions.add(ownersSub).add(addOwnerSub).add(editOwner);
   }
 
   get cars() {
@@ -106,7 +112,7 @@ export class OwnerComponent implements OnInit, AfterContentChecked {
         this.viewOwnerIsLoadedTimes++;
       }
 
-      this.carOwnersService.viewOwner$.subscribe((data) => {
+      const viewOwner = this.carOwnersService.viewOwner$.subscribe((data) => {
         this.viewOnly = data;
       });
 
@@ -117,11 +123,16 @@ export class OwnerComponent implements OnInit, AfterContentChecked {
         this.ownerForm.controls['middleName'].disable();
         this.ownerForm.controls['cars'].disable();
       }
+      this.subscriptions.add(viewOwner);
     } else {
       this.ownerForm.patchValue({
         id: this.idOwner,
       })
     }
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 
   addCar() {
@@ -156,11 +167,12 @@ export class OwnerComponent implements OnInit, AfterContentChecked {
     }
 
     if (this.storage.getItem('isEditOnly') === 'true') {
-      this.carOwnersService.editOwner(this.ownerForm.value).subscribe((data: OwnerEntity) => {
+      const editOwnerOnSave = this.carOwnersService.editOwner(this.ownerForm.value).subscribe((data: OwnerEntity) => {
         this.owner = data;
       });
 
       this.dialog.open(DialogOnSaveEditComponent);
+      this.subscriptions.add(editOwnerOnSave);
     }
   }
 }

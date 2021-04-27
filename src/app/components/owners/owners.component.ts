@@ -1,19 +1,21 @@
-import { Component, OnInit } from '@angular/core';
-import { OwnerEntity } from '../../shared/models/interfaces';
-import { CarOwnersService } from '../../services/car-owners.service';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {OwnerEntity} from '../../shared/models/interfaces';
+import {CarOwnersService} from '../../services/car-owners.service';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-owners',
   templateUrl: './owners.component.html',
   styleUrls: ['./owners.component.scss']
 })
-export class OwnersComponent implements OnInit {
+export class OwnersComponent implements OnInit, OnDestroy {
   activeRow: boolean = false;
   addOnly: boolean = false;
   displayedColumns: string[] = ['lastName', 'firstName', 'middleName', 'cars'];
   editOnly: boolean = false;
   owners: OwnerEntity[] = [];
   ownerId: number;
+  subscriptions: Subscription = new Subscription();
   viewOnly: boolean = false;
   private readonly storage: Storage;
 
@@ -22,12 +24,18 @@ export class OwnersComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.carOwnersService.getOwners().subscribe((data: OwnerEntity[]) => {
+    const getOwners = this.carOwnersService.getOwners().subscribe((data: OwnerEntity[]) => {
       this.owners = data;
     });
     this.carOwnersService.getAddOwner(this.addOnly);
     this.carOwnersService.getEditOwner(this.editOnly);
     this.carOwnersService.getViewOwner(this.viewOnly);
+
+    this.subscriptions.add(getOwners);
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 
   chooseRow(row) {
@@ -56,10 +64,12 @@ export class OwnersComponent implements OnInit {
   }
 
   deleteOwner(ownerNumber) {
-    this.carOwnersService.deleteOwner(ownerNumber).subscribe();
+    const deleteOwner = this.carOwnersService.deleteOwner(ownerNumber).subscribe();
 
-    this.carOwnersService.getOwners().subscribe((data: OwnerEntity[]) => {
+    const getOwnersAfterDeletion = this.carOwnersService.getOwners().subscribe((data: OwnerEntity[]) => {
       this.owners = data;
     });
+
+    this.subscriptions.add(deleteOwner).add(getOwnersAfterDeletion);
   }
 }

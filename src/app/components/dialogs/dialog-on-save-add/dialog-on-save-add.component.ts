@@ -5,11 +5,5 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './dialog-on-save-add.component.html',
   styleUrls: ['./dialog-on-save-add.component.scss']
 })
-export class DialogOnSaveAddComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+export class DialogOnSaveAddComponent {
 }
